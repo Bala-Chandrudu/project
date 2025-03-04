@@ -83,7 +83,7 @@ export function WelcomePage({ user, onSignOut }: WelcomePageProps) {
               <p className="text-xl text-gray-600">Registration Number: {userData.user_metadata.registration_number}</p>
             </div>
 
-            <div className="mt-12 bg-white rounded-lg shadow-xl p-8 max-w-3xl mx-auto">
+            <div className="mt-12 bg-transparent rounded-lg shadow-xl p-8 max-w-3xl mx-auto">
               <div className="space-y-6">
                 <div>
                   <h2 className="text-2xl font-bold text-gray-900 mb-4">Your Profile</h2>
