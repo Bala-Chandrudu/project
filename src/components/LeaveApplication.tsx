@@ -2,17 +2,18 @@
 
 import type React from "react"
 import { useState } from "react"
-import { Calendar, Clock, FileText, Phone, User, Hash, ListStart } from "lucide-react"
+import { Calendar, Clock, FileText, Phone, User, Hash, ListStart, BookOpen } from "lucide-react"
 import { supabase } from "../lib/supabase"
 import toast from "react-hot-toast"
-import collegeBackground from '../assets/lbrce.jpg';
-
+import collegeBackground from "../assets/lbrce.jpg"
 
 interface LeaveApplicationProps {
   userId: string
   userName: string
   registrationNumber: string
   parentPhone: string
+  section?: string
+  year?: string
   onClose: () => void
   onSubmit: () => void
 }
@@ -22,6 +23,8 @@ export function LeaveApplication({
   userName,
   registrationNumber,
   parentPhone,
+  section,
+  year,
   onClose,
   onSubmit,
 }: LeaveApplicationProps) {
@@ -31,6 +34,8 @@ export function LeaveApplication({
   const [reason, setReason] = useState("")
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState("")
+  const [sectionValue, setSectionValue] = useState(section || "")
+  const [yearValue, setYearValue] = useState(year || "")
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -53,6 +58,8 @@ export function LeaveApplication({
         formData.append("end_date", endDate)
         formData.append("registration_number", registrationNumber)
         formData.append("parent_phone", parentPhone)
+        formData.append("section", sectionValue)
+        formData.append("year", yearValue)
         return formData
       }
 
@@ -82,6 +89,8 @@ export function LeaveApplication({
             end_date: endDate,
             reason,
             phone,
+            section: sectionValue,
+            year: yearValue,
           },
         ])
 
@@ -103,7 +112,10 @@ export function LeaveApplication({
   }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50" style={{ backgroundImage: `url(${collegeBackground})`, backgroundSize: 'cover' }} >
+    <div
+      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
+      style={{ backgroundImage: `url(${collegeBackground})`, backgroundSize: "cover" }}
+    >
       <div className="bg-white rounded-lg p-6 max-w-md w-full max-h-[80vh] overflow-y-auto ">
         <h2 className="text-2xl font-semibold text-gray-900 mb-4">Apply for Leave</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -136,6 +148,50 @@ export function LeaveApplication({
                 readOnly
                 className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md bg-gray-50"
               />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Section</label>
+              <div className="mt-1 relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <ListStart className="h-5 w-5 text-gray-400" />
+                </div>
+                <select
+                  name="section"
+                  value={sectionValue}
+                  onChange={(e) => setSectionValue(e.target.value)}
+                  className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md"
+                >
+                  <option value="">Select Section</option>
+                  <option value="A">A</option>
+                  <option value="B">B</option>
+                  <option value="C">C</option>
+                  <option value="D">D</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Year of Study</label>
+              <div className="mt-1 relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <BookOpen className="h-5 w-5 text-gray-400" />
+                </div>
+                <select
+                  name="year"
+                  value={yearValue}
+                  onChange={(e) => setYearValue(e.target.value)}
+                  className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md"
+                >
+                  <option value="">Select Year</option>
+                  <option value="1">1st Year</option>
+                  <option value="2">2nd Year</option>
+                  <option value="3">3rd Year</option>
+                  <option value="4">4th Year</option>
+                </select>
+              </div>
             </div>
           </div>
 
@@ -252,4 +308,6 @@ export function LeaveApplication({
     </div>
   )
 }
+
+
 
